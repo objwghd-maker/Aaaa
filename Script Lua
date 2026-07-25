@@ -37,7 +37,7 @@ local function SendNotification(title, text)
     card.BackgroundColor3 = Color3.fromRGB(10, 14, 22)
     card.BackgroundTransparency = 0.1
     card.AnchorPoint = Vector2.new(1, 0)
-    card.Position = UDim2.new(1, 80, 0, 10)
+    card.Position = UDim2.new(1, 80, 0, 10) -- เริ่มต้นไกลออกไปทางขวา (นอกจอ)
     card.Parent = NotifContainer
 
     local corner = Instance.new("UICorner")
@@ -71,8 +71,9 @@ local function SendNotification(title, text)
     mLabel.TextXAlignment = Enum.TextXAlignment.Left
     mLabel.Parent = card
 
+    -- Tween ให้การ์ดเลื่อนเข้ามา
     TweenService:Create(card, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-        Position = UDim2.new(1, -10, 0, 10)
+        Position = UDim2.new(1, -10, 0, 10) -- หยุดที่ระยะห่างจากขอบขวา 10px
     }):Play()
 
     task.delay(3, function()
@@ -151,18 +152,39 @@ D4.Parent = ToggleMenuBtn
 local D4C = Instance.new("UICorner", D4)
 D4C.CornerRadius = UDim.new(0, 2)
 
--- เปลี่ยนโครงสร้าง MainFrame ให้ใช้ ImageLabel รองรับรูปภาพกรอบเมนู
-local MainFrame = Instance.new("ImageLabel")
+local MainFrame = Instance.new("Frame")
 MainFrame.Size = UDim2.new(0, 280, 0, 270)
 MainFrame.Position = UDim2.new(0.1, 0, 0.15, 0)
-MainFrame.BackgroundTransparency = 1
-MainFrame.Image = "https://raw.githubusercontent.com/objwghd-maker/ScriptScriptScriptScriptScrip/refs/heads/main/IMG_20260725_164205.png"
-MainFrame.ScaleType = Enum.ScaleType.Fit
+MainFrame.BackgroundColor3 = Color3.fromRGB(8, 12, 20)
 MainFrame.Active = true
 MainFrame.Draggable = true
 MainFrame.ClipsDescendants = true
 MainFrame.Parent = ScreenGui
 MainFrame.Visible = false
+
+local MainCorner = Instance.new("UICorner")
+MainCorner.CornerRadius = UDim.new(0, 10)
+MainCorner.Parent = MainFrame
+
+local MainStroke = Instance.new("UIStroke")
+MainStroke.Color = Color3.fromRGB(255, 50, 50)
+MainStroke.Thickness = 2
+MainStroke.Parent = MainFrame
+
+local InnerBorder = Instance.new("Frame")
+InnerBorder.Size = UDim2.new(1, -8, 1, -8)
+InnerBorder.Position = UDim2.new(0, 4, 0, 4)
+InnerBorder.BackgroundTransparency = 1
+InnerBorder.Parent = MainFrame
+
+local InnerCorner = Instance.new("UICorner")
+InnerCorner.CornerRadius = UDim.new(0, 10)
+InnerCorner.Parent = InnerBorder
+
+local InnerStroke = Instance.new("UIStroke")
+InnerStroke.Color = Color3.fromRGB(255, 50, 50)
+InnerStroke.Thickness = 1.5
+InnerStroke.Parent = InnerBorder
 
 local TitleBar = Instance.new("Frame")
 TitleBar.Size = UDim2.new(1, 0, 0, 38)
@@ -201,6 +223,14 @@ local CloseStroke = Instance.new("UIStroke", CloseBtn)
 CloseStroke.Color = Color3.fromRGB(255, 50, 50)
 CloseStroke.Thickness = 1.5
 
+local LineSeparator = Instance.new("Frame")
+LineSeparator.Size = UDim2.new(1, -24, 0, 1)
+LineSeparator.Position = UDim2.new(0, 12, 0, 38)
+LineSeparator.BackgroundColor3 = Color3.fromRGB(0, 180, 200)
+LineSeparator.BackgroundTransparency = 0.4
+LineSeparator.BorderSizePixel = 0
+LineSeparator.Parent = MainFrame
+
 CloseBtn.MouseButton1Click:Connect(function()
     MainFrame.Visible = false
     TweenService:Create(ToggleMenuBtn, TweenInfo.new(0.2), {BackgroundTransparency = 0}):Play()
@@ -216,8 +246,8 @@ ToggleMenuBtn.MouseButton1Click:Connect(function()
 end)
 
 local Container = Instance.new("ScrollingFrame")
-Container.Size = UDim2.new(1, -24, 1, -56)
-Container.Position = UDim2.new(0, 12, 0, 44)
+Container.Size = UDim2.new(1, -16, 1, -52)
+Container.Position = UDim2.new(0, 8, 0, 44)
 Container.BackgroundTransparency = 1
 Container.BorderSizePixel = 0
 Container.CanvasSize = UDim2.new(0, 0, 0, 320)
@@ -382,4 +412,3 @@ local function toggleSpeed()
 end
 
 SpeedBtn.MouseButton1Click:Connect(toggleSpeed)
-
