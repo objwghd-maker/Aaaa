@@ -2,7 +2,6 @@ local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local CoreGui = game:GetService("CoreGui")
 local TweenService = game:GetService("TweenService")
-local ContentProvider = game:GetService("ContentProvider")
 
 local LocalPlayer = Players.LocalPlayer
 
@@ -152,15 +151,13 @@ D4.Parent = ToggleMenuBtn
 local D4C = Instance.new("UICorner", D4)
 D4C.CornerRadius = UDim.new(0, 2)
 
-local FrameUrl = "https://raw.githubusercontent.com/objwghd-maker/ScriptScriptScriptScriptScrip/refs/heads/main/IMG_20260725_164205.png"
-ContentProvider:PreloadAsync({FrameUrl})
-
+-- เปลี่ยนโครงสร้าง MainFrame ให้ใช้ ImageLabel รองรับรูปภาพกรอบเมนู
 local MainFrame = Instance.new("ImageLabel")
 MainFrame.Size = UDim2.new(0, 280, 0, 270)
 MainFrame.Position = UDim2.new(0.1, 0, 0.15, 0)
 MainFrame.BackgroundTransparency = 1
-MainFrame.Image = FrameUrl
-MainFrame.ScaleType = Enum.ScaleType.Stretch
+MainFrame.Image = "https://raw.githubusercontent.com/objwghd-maker/ScriptScriptScriptScriptScrip/refs/heads/main/IMG_20260725_164205.png"
+MainFrame.ScaleType = Enum.ScaleType.Fit
 MainFrame.Active = true
 MainFrame.Draggable = true
 MainFrame.ClipsDescendants = true
@@ -168,8 +165,7 @@ MainFrame.Parent = ScreenGui
 MainFrame.Visible = false
 
 local TitleBar = Instance.new("Frame")
-TitleBar.Size = UDim2.new(1, -20, 0, 38)
-TitleBar.Position = UDim2.new(0, 10, 0, 0)
+TitleBar.Size = UDim2.new(1, 0, 0, 38)
 TitleBar.BackgroundTransparency = 1
 TitleBar.Parent = MainFrame
 
@@ -205,26 +201,23 @@ local CloseStroke = Instance.new("UIStroke", CloseBtn)
 CloseStroke.Color = Color3.fromRGB(255, 50, 50)
 CloseStroke.Thickness = 1.5
 
-local function toggleMenu()
+CloseBtn.MouseButton1Click:Connect(function()
+    MainFrame.Visible = false
+    TweenService:Create(ToggleMenuBtn, TweenInfo.new(0.2), {BackgroundTransparency = 0}):Play()
+end)
+
+ToggleMenuBtn.MouseButton1Click:Connect(function()
     MainFrame.Visible = not MainFrame.Visible
     if MainFrame.Visible then
         TweenService:Create(ToggleMenuBtn, TweenInfo.new(0.2), {BackgroundTransparency = 0.5}):Play()
     else
         TweenService:Create(ToggleMenuBtn, TweenInfo.new(0.2), {BackgroundTransparency = 0}):Play()
     end
-end
-
-local function closeMenu()
-    MainFrame.Visible = false
-    TweenService:Create(ToggleMenuBtn, TweenInfo.new(0.2), {BackgroundTransparency = 0}):Play()
-end
-
-ToggleMenuBtn.MouseButton1Click:Connect(toggleMenu)
-CloseBtn.MouseButton1Click:Connect(closeMenu)
+end)
 
 local Container = Instance.new("ScrollingFrame")
-Container.Size = UDim2.new(1, -16, 1, -55)
-Container.Position = UDim2.new(0, 8, 0, 45)
+Container.Size = UDim2.new(1, -24, 1, -56)
+Container.Position = UDim2.new(0, 12, 0, 44)
 Container.BackgroundTransparency = 1
 Container.BorderSizePixel = 0
 Container.CanvasSize = UDim2.new(0, 0, 0, 320)
@@ -241,7 +234,6 @@ local function CreateButton(text, callback)
     local btn = Instance.new("TextButton")
     btn.Size = UDim2.new(1, -4, 0, 38)
     btn.BackgroundColor3 = Color3.fromRGB(12, 18, 30)
-    btn.BackgroundTransparency = 0.1
     btn.Text = text
     btn.TextColor3 = Color3.fromRGB(255, 255, 255)
     btn.TextSize = 12
@@ -325,7 +317,6 @@ local speedConnection = nil
 local SpeedBtn = Instance.new("TextButton")
 SpeedBtn.Size = UDim2.new(1, -4, 0, 38)
 SpeedBtn.BackgroundColor3 = Color3.fromRGB(12, 18, 30)
-SpeedBtn.BackgroundTransparency = 0.1
 SpeedBtn.Text = "วิ่งเร็ว 50 : OFF"
 SpeedBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 SpeedBtn.TextSize = 12
@@ -391,3 +382,4 @@ local function toggleSpeed()
 end
 
 SpeedBtn.MouseButton1Click:Connect(toggleSpeed)
+
